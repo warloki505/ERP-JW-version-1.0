@@ -1,5 +1,5 @@
 /* ===============================
-   ERP FINANCEIRO - STYLESHEET COMPLETO
+   ERP FINANCEIRO - STYLESHEET COMPLETO (CURADO)
    Design: Profissional Minimalista
    =============================== */
 
@@ -14,31 +14,31 @@
   --text-secondary: #475569;
   --muted: #64748b;
   --border: #e2e8f0;
-  
+
   /* Cores de Ação */
   --primary: #3b82f6;
   --primary-hover: #2563eb;
   --primary-light: #dbeafe;
-  
+
   --success: #10b981;
   --success-light: #d1fae5;
-  
+
   --warning: #f59e0b;
   --warning-light: #fef3c7;
-  
+
   --danger: #ef4444;
   --danger-light: #fee2e2;
-  
+
   /* Sombras */
   --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
   --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
   --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
-  
+
   /* Bordas */
   --radius-sm: 6px;
   --radius-md: 10px;
   --radius-lg: 16px;
-  
+
   /* Transições */
   --transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
 }
@@ -57,12 +57,15 @@ html {
 }
 
 body {
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', sans-serif;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Oxygen", "Ubuntu", sans-serif;
   background: var(--bg);
   color: var(--text);
   line-height: 1.6;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+
+  /* ERP = consistente no claro */
+  color-scheme: light;
 }
 
 /* ===============================
@@ -119,10 +122,8 @@ h1 {
 }
 
 h2 {
-  font-size: 18px;
-  font-weight: 700;
   margin: 0 0 16px 0;
-  color: var(--text);
+  font-weight: 700;
   letter-spacing: -0.01em;
   text-transform: uppercase;
   font-size: 14px;
@@ -179,7 +180,7 @@ h3 {
 
 .btn--primary {
   background: var(--primary);
-  color: white;
+  color: #fff;
 }
 
 .btn--primary:hover:not(:disabled) {
@@ -190,7 +191,7 @@ h3 {
 
 .btn--success {
   background: var(--success);
-  color: white;
+  color: #fff;
 }
 
 .btn--success:hover:not(:disabled) {
@@ -200,7 +201,7 @@ h3 {
 
 .btn--danger {
   background: var(--danger);
-  color: white;
+  color: #fff;
 }
 
 .btn--danger:hover:not(:disabled) {
@@ -245,7 +246,7 @@ h3 {
 
 .btn-edit:hover {
   background: var(--primary);
-  color: white;
+  color: #fff;
 }
 
 .btn-del {
@@ -256,7 +257,7 @@ h3 {
 
 .btn-del:hover {
   background: var(--danger);
-  color: white;
+  color: #fff;
 }
 
 /* ===============================
@@ -315,7 +316,7 @@ h3 {
 }
 
 .kpi--highlight::before {
-  content: '';
+  content: "";
   position: absolute;
   top: -50%;
   right: -50%;
@@ -377,7 +378,7 @@ textarea {
   border-radius: var(--radius-sm);
   font-size: 14px;
   color: var(--text);
-  background: white;
+  background: #fff;
   transition: var(--transition);
   font-family: inherit;
 }
@@ -395,20 +396,34 @@ textarea::placeholder {
   color: var(--muted);
 }
 
-/* Fix para select no Safari */
+/* ===============================
+   SELECT / OPTION — ESTILO ERP (AZUL + CINZA)
+   ÚNICA estratégia (sem conflito)
+   =============================== */
 select {
-  -webkit-appearance: none;
-  -moz-appearance: none;
-  appearance: none;
-  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath fill='%2364748b' d='M6 9L1 4h10z'/%3E%3C/svg%3E");
-  background-repeat: no-repeat;
-  background-position: right 12px center;
-  padding-right: 36px;
+  background-color: #f8fafc;          /* cinza bem claro */
+  color: #1f2937;                      /* texto escuro */
+  border: 1px solid #cbd5e1;          /* cinza-azulado */
+  -webkit-appearance: menulist;
+  appearance: menulist;
 }
 
+/* placeholder "Selecione" */
+select option[value=""] {
+  color: #94a3b8; /* cinza suave */
+}
+
+/* opções */
 option {
-  background: white;
-  color: var(--text);
+  background-color: #ffffff;
+  color: #1f2937;
+}
+
+/* opção selecionada */
+option:checked,
+option[selected] {
+  background-color: #2563eb;
+  color: #ffffff;
 }
 
 /* ===============================
@@ -418,7 +433,7 @@ option {
   overflow-x: auto;
   border: 1px solid var(--border);
   border-radius: var(--radius-md);
-  background: white;
+  background: #fff;
 }
 
 table {
@@ -465,38 +480,6 @@ tbody td {
   display: flex;
   gap: 8px;
   align-items: center;
-}
-
-/* ===============================
-   BADGES / TAGS
-   =============================== */
-.badge {
-  display: inline-flex;
-  align-items: center;
-  padding: 4px 10px;
-  border-radius: 12px;
-  font-size: 11px;
-  font-weight: 600;
-  text-transform: uppercase;
-  letter-spacing: 0.3px;
-}
-
-.badge-receita {
-  background: var(--success-light);
-  color: var(--success);
-  border: 1px solid var(--success);
-}
-
-.badge-poupanca {
-  background: var(--primary-light);
-  color: var(--primary);
-  border: 1px solid var(--primary);
-}
-
-.badge-despesa {
-  background: var(--danger-light);
-  color: var(--danger);
-  border: 1px solid var(--danger);
 }
 
 /* ===============================
@@ -557,51 +540,25 @@ tbody td {
 }
 
 @keyframes slideIn {
-  from {
-    transform: translateX(400px);
-    opacity: 0;
-  }
-  to {
-    transform: translateX(0);
-    opacity: 1;
-  }
+  from { transform: translateX(400px); opacity: 0; }
+  to   { transform: translateX(0); opacity: 1; }
 }
 
 @keyframes slideOut {
-  from {
-    transform: translateX(0);
-    opacity: 1;
-  }
-  to {
-    transform: translateX(400px);
-    opacity: 0;
-  }
+  from { transform: translateX(0); opacity: 1; }
+  to   { transform: translateX(400px); opacity: 0; }
 }
 
-.toast--success {
-  background: var(--success);
-  color: white;
-}
-
-.toast--error {
-  background: var(--danger);
-  color: white;
-}
-
-.toast--info {
-  background: var(--primary);
-  color: white;
-}
+.toast--success { background: var(--success); color: #fff; }
+.toast--error   { background: var(--danger);  color: #fff; }
+.toast--info    { background: var(--primary); color: #fff; }
 
 /* ===============================
    MODAL
    =============================== */
 .modal-overlay {
   position: fixed;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
+  inset: 0;
   background: rgba(0, 0, 0, 0.5);
   display: flex;
   align-items: center;
@@ -612,11 +569,11 @@ tbody td {
 
 @keyframes fadeIn {
   from { opacity: 0; }
-  to { opacity: 1; }
+  to   { opacity: 1; }
 }
 
 .modal {
-  background: white;
+  background: #fff;
   border-radius: var(--radius-lg);
   box-shadow: var(--shadow-lg);
   max-width: 500px;
@@ -627,14 +584,8 @@ tbody td {
 }
 
 @keyframes scaleIn {
-  from {
-    transform: scale(0.9);
-    opacity: 0;
-  }
-  to {
-    transform: scale(1);
-    opacity: 1;
-  }
+  from { transform: scale(0.9); opacity: 0; }
+  to   { transform: scale(1); opacity: 1; }
 }
 
 .modal-header {
@@ -645,13 +596,9 @@ tbody td {
   justify-content: space-between;
 }
 
-.modal-header h3 {
-  margin: 0;
-}
+.modal-header h3 { margin: 0; }
 
-.modal-body {
-  padding: 24px;
-}
+.modal-body { padding: 24px; }
 
 .modal-footer {
   padding: 16px 24px;
@@ -669,7 +616,7 @@ tbody td {
   width: 20px;
   height: 20px;
   border: 3px solid rgba(255, 255, 255, 0.3);
-  border-top-color: white;
+  border-top-color: #fff;
   border-radius: 50%;
   animation: spin 0.6s linear infinite;
 }
@@ -682,16 +629,16 @@ tbody td {
    UTILITIES
    =============================== */
 .text-center { text-align: center; }
-.text-right { text-align: right; }
-.text-muted { color: var(--muted); }
-.text-primary { color: var(--primary); }
-.text-success { color: var(--success); }
+.text-right  { text-align: right;  }
+.text-muted  { color: var(--muted); }
+.text-primary{ color: var(--primary); }
+.text-success{ color: var(--success); }
 .text-danger { color: var(--danger); }
 
-.mt-1 { margin-top: 8px; }
+.mt-1 { margin-top: 8px;  }
 .mt-2 { margin-top: 16px; }
 .mt-3 { margin-top: 24px; }
-.mb-1 { margin-bottom: 8px; }
+.mb-1 { margin-bottom: 8px;  }
 .mb-2 { margin-bottom: 16px; }
 .mb-3 { margin-bottom: 24px; }
 
@@ -701,53 +648,27 @@ tbody td {
    RESPONSIVE
    =============================== */
 @media (max-width: 1024px) {
-  .kpi-grid {
-    grid-template-columns: repeat(2, 1fr);
-  }
-  
-  .grid-3 {
-    grid-template-columns: 1fr;
-  }
+  .kpi-grid { grid-template-columns: repeat(2, 1fr); }
+  .grid-3 { grid-template-columns: 1fr; }
 }
 
 @media (max-width: 768px) {
-  .container {
-    padding: 0 16px;
-  }
-  
-  .card {
-    padding: 16px;
-  }
-  
-  .kpi-grid {
-    grid-template-columns: 1fr;
-  }
-  
-  h1 {
-    font-size: 24px;
-  }
-  
-  .topbar h1 {
-    font-size: 16px;
-  }
-  
+  .container { padding: 0 16px; }
+  .card { padding: 16px; }
+  .kpi-grid { grid-template-columns: 1fr; }
+
+  h1 { font-size: 24px; }
+  .topbar h1 { font-size: 16px; }
+
   .footer-actions {
     flex-direction: column;
     align-items: stretch;
   }
-  
-  .footer-actions .btn {
-    width: 100%;
-  }
-  
-  table {
-    font-size: 12px;
-  }
-  
-  thead th,
-  tbody td {
-    padding: 10px 8px;
-  }
+
+  .footer-actions .btn { width: 100%; }
+
+  table { font-size: 12px; }
+  thead th, tbody td { padding: 10px 8px; }
 }
 
 @media (max-width: 480px) {
@@ -756,7 +677,7 @@ tbody td {
     align-items: flex-start;
     gap: 12px;
   }
-  
+
   .topbar__actions {
     width: 100%;
     justify-content: space-between;
@@ -764,111 +685,25 @@ tbody td {
 }
 
 /* ===============================
-   DARK MODE (opcional)
-   =============================== */
-@media (prefers-color-scheme: dark) {
-  :root {
-    --bg: #0f172a;
-    --card: #1e293b;
-    --text: #f1f5f9;
-    --text-secondary: #cbd5e1;
-    --muted: #94a3b8;
-    --border: #334155;
-  }
-  
-  input,
-  select,
-  textarea {
-    background: #334155;
-    color: var(--text);
-  }
-  
-  table {
-    background: var(--card);
-  }
-  
-  thead {
-    background: linear-gradient(to bottom, #1e293b, #334155);
-  }
-  
-  .kpi {
-    background: linear-gradient(135deg, #1e293b 0%, #334155 100%);
-  }
-  
-  .kpi--highlight {
-    background: linear-gradient(135deg, #1e3a8a 0%, #1e40af 100%);
-  }
-}
-
-/* ===============================
    PRINT STYLES
    =============================== */
 @media print {
-  body {
-    background: white;
-  }
-  
+  body { background: #fff; }
+
   .topbar,
   .btn,
   .footer-actions {
     display: none !important;
   }
-  
+
   .card {
     page-break-inside: avoid;
     box-shadow: none;
     border: 1px solid #ddd;
   }
-  
+
   .kpi {
     border: 1px solid #ddd;
-    background: white !important;
+    background: #fff !important;
   }
 }
-/* =========================================
-   SELECT / OPTION — ESTILO ERP (AZUL + CINZA)
-   ========================================= */
-
-select {
-  background-color: #f8fafc !important;   /* cinza bem claro */
-  color: #1f2937 !important;              /* texto escuro */
-  border: 1px solid #cbd5e1 !important;   /* cinza-azulado */
-  border-radius: 8px;
-  padding: 10px;
-  font-size: 14px;
-  -webkit-appearance: menulist !important;
-  appearance: menulist !important;
-}
-
-/* placeholder "Selecione" */
-select option[value=""] {
-  color: #94a3b8; /* cinza suave */
-}
-
-/* opções normais */
-option {
-  background-color: #ffffff !important;
-  color: #1f2937 !important;
-}
-
-/* hover (quando passa o mouse) */
-option:hover {
-  background-color: #e5efff !important; /* azul bem claro */
-  color: #1e3a8a !important;
-}
-
-/* opção selecionada */
-option:checked,
-option[selected] {
-  background-color: #2563eb !important; /* azul principal */
-  color: #ffffff !important;
-}
-
-/* foco no select (clique) */
-select:focus {
-  outline: none;
-  border-color: #2563eb !important;
-  box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.2);
-  background-color: #ffffff !important;
-}
-
