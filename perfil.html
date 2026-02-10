@@ -1,0 +1,301 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>ERP Financeiro - Perfil Financeiro</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+
+<body>
+  <header class="topbar">
+    <div class="container topbar__row">
+      <h1>💰 Gestor Financeiro</h1>
+      <div class="topbar__actions">
+        <button onclick="location.href='dashboard.html'" class="btn btn--ghost">← Voltar ao Dashboard</button>
+        <button id="logoutBtn" class="btn btn--ghost">🚪 Sair</button>
+      </div>
+    </div>
+  </header>
+
+  <main class="container" style="max-width: 800px; margin-top: 24px;">
+    
+    <!-- INFORMAÇÕES DO USUÁRIO -->
+    <section class="card">
+      <h2>👤 INFORMAÇÕES DO USUÁRIO</h2>
+      <div class="form">
+        <div class="form-group">
+          <label>Nome</label>
+          <input type="text" id="displayNome" readonly style="background: #f8fafc !important;" />
+        </div>
+        
+        <div class="form-group">
+          <label>E-mail</label>
+          <input type="email" id="displayEmail" readonly style="background: #f8fafc !important;" />
+        </div>
+        
+        <div class="form-group">
+          <label>Conta criada em</label>
+          <input type="text" id="displayDataCriacao" readonly style="background: #f8fafc !important;" />
+        </div>
+      </div>
+    </section>
+
+    <!-- PERFIL FINANCEIRO -->
+    <section class="card">
+      <h2>📊 PERFIL FINANCEIRO</h2>
+      <p class="text-muted" style="margin-bottom: 20px;">
+        Defina seu perfil e como deseja distribuir sua renda mensalmente
+      </p>
+      
+      <form id="formPerfil" class="form">
+        <div class="form-group">
+          <label for="tipoPerfil">Tipo de Perfil</label>
+          <select id="tipoPerfil" required>
+            <option value="">Selecione seu perfil</option>
+            <option value="responsavel">🎯 Responsável (foco em estabilidade)</option>
+            <option value="conservador">🛡️ Conservador (máxima segurança)</option>
+            <option value="livre">🌟 Livre (mais flexibilidade)</option>
+          </select>
+          <small class="text-muted">Cada perfil tem percentuais sugeridos diferentes</small>
+        </div>
+        
+        <div class="form-group">
+          <label for="percDespesasEssenciais">Despesas Essenciais (%)</label>
+          <input 
+            type="number" 
+            id="percDespesasEssenciais" 
+            min="0" 
+            max="100" 
+            step="1" 
+            placeholder="Ex: 50"
+            required 
+          />
+          <small class="text-muted">Moradia, alimentação, transporte, saúde...</small>
+        </div>
+        
+        <div class="form-group">
+          <label for="percDespesasLivres">Despesas Livres (%)</label>
+          <input 
+            type="number" 
+            id="percDespesasLivres" 
+            min="0" 
+            max="100" 
+            step="1" 
+            placeholder="Ex: 30"
+            required 
+          />
+          <small class="text-muted">Lazer, entretenimento, extras...</small>
+        </div>
+        
+        <div class="form-group">
+          <label for="percPoupanca">Poupança / Investimentos (%)</label>
+          <input 
+            type="number" 
+            id="percPoupanca" 
+            min="0" 
+            max="100" 
+            step="1" 
+            placeholder="Ex: 20"
+            required 
+          />
+          <small class="text-muted">Reserva de emergência, investimentos...</small>
+        </div>
+        
+        <div id="totalPerc" class="status status--info" style="margin-top: 16px;">
+          Total: <strong>0%</strong>
+        </div>
+        
+        <button type="submit" class="btn btn--primary" style="width: 100%; margin-top: 8px;">
+          💾 Salvar Perfil Financeiro
+        </button>
+      </form>
+    </section>
+
+    <!-- PERFIS SUGERIDOS -->
+    <section class="card">
+      <h2>💡 PERFIS SUGERIDOS</h2>
+      <div style="display: grid; gap: 16px;">
+        
+        <div style="border: 1px solid var(--border); border-radius: 8px; padding: 16px;">
+          <h3 style="margin-bottom: 8px;">🎯 Responsável</h3>
+          <p class="text-muted" style="font-size: 13px; margin-bottom: 12px;">
+            Equilíbrio entre segurança e qualidade de vida
+          </p>
+          <div style="display: flex; gap: 12px; flex-wrap: wrap;">
+            <span class="badge badge-despesa">50% Essenciais</span>
+            <span class="badge badge-despesa">30% Livres</span>
+            <span class="badge badge-poupanca">20% Poupança</span>
+          </div>
+          <button onclick="aplicarPerfil('responsavel')" class="btn btn--ghost btn-mini" style="margin-top: 12px;">
+            Aplicar este perfil
+          </button>
+        </div>
+        
+        <div style="border: 1px solid var(--border); border-radius: 8px; padding: 16px;">
+          <h3 style="margin-bottom: 8px;">🛡️ Conservador</h3>
+          <p class="text-muted" style="font-size: 13px; margin-bottom: 12px;">
+            Máxima segurança financeira e reservas
+          </p>
+          <div style="display: flex; gap: 12px; flex-wrap: wrap;">
+            <span class="badge badge-despesa">50% Essenciais</span>
+            <span class="badge badge-despesa">20% Livres</span>
+            <span class="badge badge-poupanca">30% Poupança</span>
+          </div>
+          <button onclick="aplicarPerfil('conservador')" class="btn btn--ghost btn-mini" style="margin-top: 12px;">
+            Aplicar este perfil
+          </button>
+        </div>
+        
+        <div style="border: 1px solid var(--border); border-radius: 8px; padding: 16px;">
+          <h3 style="margin-bottom: 8px;">🌟 Livre</h3>
+          <p class="text-muted" style="font-size: 13px; margin-bottom: 12px;">
+            Mais liberdade para curtir a vida
+          </p>
+          <div style="display: flex; gap: 12px; flex-wrap: wrap;">
+            <span class="badge badge-despesa">50% Essenciais</span>
+            <span class="badge badge-despesa">40% Livres</span>
+            <span class="badge badge-poupanca">10% Poupança</span>
+          </div>
+          <button onclick="aplicarPerfil('livre')" class="btn btn--ghost btn-mini" style="margin-top: 12px;">
+            Aplicar este perfil
+          </button>
+        </div>
+        
+      </div>
+    </section>
+
+  </main>
+
+  <script>
+    const USER_KEY = "gf_erp_user";
+    const LOGGED_KEY = "gf_erp_logged";
+    const PERFIL_KEY = "gf_erp_perfil";
+
+    // Verificar login
+    if (localStorage.getItem(LOGGED_KEY) !== "true") {
+      window.location.href = "index.html";
+    }
+
+    // Carregar dados do usuário
+    const user = JSON.parse(localStorage.getItem(USER_KEY) || 'null');
+    if (user) {
+      document.getElementById('displayNome').value = user.nome;
+      document.getElementById('displayEmail').value = user.email;
+      
+      if (user.dataCriacao) {
+        const data = new Date(user.dataCriacao);
+        document.getElementById('displayDataCriacao').value = data.toLocaleDateString('pt-BR');
+      }
+    }
+
+    // Carregar perfil salvo
+    const perfilSalvo = JSON.parse(localStorage.getItem(PERFIL_KEY) || 'null');
+    if (perfilSalvo) {
+      document.getElementById('tipoPerfil').value = perfilSalvo.tipo || '';
+      document.getElementById('percDespesasEssenciais').value = perfilSalvo.percEssenciais || '';
+      document.getElementById('percDespesasLivres').value = perfilSalvo.percLivres || '';
+      document.getElementById('percPoupanca').value = perfilSalvo.percPoupanca || '';
+      atualizarTotal();
+    }
+
+    // Atualizar total de percentuais
+    function atualizarTotal() {
+      const essenciais = Number(document.getElementById('percDespesasEssenciais').value) || 0;
+      const livres = Number(document.getElementById('percDespesasLivres').value) || 0;
+      const poupanca = Number(document.getElementById('percPoupanca').value) || 0;
+      
+      const total = essenciais + livres + poupanca;
+      const totalEl = document.getElementById('totalPerc');
+      
+      totalEl.innerHTML = `Total: <strong>${total}%</strong>`;
+      
+      if (total === 100) {
+        totalEl.className = 'status status--ok';
+        totalEl.innerHTML += ' ✓ Perfeito!';
+      } else if (total > 100) {
+        totalEl.className = 'status status--error';
+        totalEl.innerHTML += ' ⚠️ Acima de 100%';
+      } else {
+        totalEl.className = 'status status--info';
+        totalEl.innerHTML += ` (faltam ${100 - total}%)`;
+      }
+    }
+
+    // Listeners para atualizar total
+    ['percDespesasEssenciais', 'percDespesasLivres', 'percPoupanca'].forEach(id => {
+      document.getElementById(id).addEventListener('input', atualizarTotal);
+    });
+
+    // Aplicar perfil sugerido
+    function aplicarPerfil(tipo) {
+      const perfis = {
+        responsavel: { essenciais: 50, livres: 30, poupanca: 20 },
+        conservador: { essenciais: 50, livres: 20, poupanca: 30 },
+        livre: { essenciais: 50, livres: 40, poupanca: 10 }
+      };
+      
+      const perfil = perfis[tipo];
+      if (!perfil) return;
+      
+      document.getElementById('tipoPerfil').value = tipo;
+      document.getElementById('percDespesasEssenciais').value = perfil.essenciais;
+      document.getElementById('percDespesasLivres').value = perfil.livres;
+      document.getElementById('percPoupanca').value = perfil.poupanca;
+      
+      atualizarTotal();
+      
+      showToast(`✓ Perfil "${tipo}" aplicado!`, 'success');
+    }
+
+    // Salvar perfil
+    document.getElementById('formPerfil').addEventListener('submit', (e) => {
+      e.preventDefault();
+      
+      const essenciais = Number(document.getElementById('percDespesasEssenciais').value);
+      const livres = Number(document.getElementById('percDespesasLivres').value);
+      const poupanca = Number(document.getElementById('percPoupanca').value);
+      const total = essenciais + livres + poupanca;
+      
+      if (total !== 100) {
+        showToast('⚠️ A soma dos percentuais deve ser exatamente 100%', 'error');
+        return;
+      }
+      
+      const perfil = {
+        tipo: document.getElementById('tipoPerfil').value,
+        percEssenciais: essenciais,
+        percLivres: livres,
+        percPoupanca: poupanca,
+        dataAtualizacao: new Date().toISOString()
+      };
+      
+      localStorage.setItem(PERFIL_KEY, JSON.stringify(perfil));
+      
+      showToast('✓ Perfil financeiro salvo com sucesso!', 'success');
+      
+      setTimeout(() => {
+        window.location.href = 'dashboard.html';
+      }, 1500);
+    });
+
+    // Toast notification
+    function showToast(message, type = 'success') {
+      const toast = document.createElement('div');
+      toast.className = `toast toast--${type}`;
+      toast.textContent = message;
+      document.body.appendChild(toast);
+      
+      setTimeout(() => toast.remove(), 3000);
+    }
+
+    // Logout
+    document.getElementById('logoutBtn').addEventListener('click', () => {
+      if (confirm("Deseja realmente sair?")) {
+        localStorage.setItem(LOGGED_KEY, "false");
+        window.location.href = "index.html";
+      }
+    });
+  </script>
+</body>
+</html>

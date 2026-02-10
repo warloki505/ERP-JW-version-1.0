@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Teste - Selects</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      max-width: 600px;
+      margin: 50px auto;
+      padding: 20px;
+    }
+    select, input {
+      width: 100%;
+      padding: 10px;
+      margin: 10px 0;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+    }
+    .status {
+      padding: 10px;
+      margin: 10px 0;
+      border-radius: 5px;
+    }
+    .ok { background: #d1fae5; color: #059669; }
+    .error { background: #fee2e2; color: #dc2626; }
+  </style>
+</head>
+<body>
+  <h1>🧪 Teste de Selects</h1>
+  
+  <h3>Receita</h3>
+  <select id="receitaCategoria"></select>
+  <select id="receitaBanco"></select>
+  
+  <h3>Poupança</h3>
+  <select id="poupancaCategoria"></select>
+  <select id="poupancaBanco"></select>
+  
+  <h3>Despesa</h3>
+  <select id="despesaSubtipo">
+    <option value="">Selecione</option>
+    <option value="essencial">Essencial</option>
+    <option value="livre">Livre</option>
+  </select>
+  <select id="despesaCategoria"></select>
+  <select id="despesaBanco"></select>
+  
+  <div id="status"></div>
+
+  <script>
+    // LISTAS
+    const RECEITA_CATEGORIAS = ["Salário", "Renda Extra", "Reembolso", "Rendimentos", "Serviços"];
+    const RECEITA_BANCOS = ["Cartão", "Itaú", "Mercado Pago", "Nubank", "Clear"];
+    
+    const POUPANCA_CATEGORIAS = ["Reserva", "Investimento", "Aplicação"];
+    const POUPANCA_BANCOS = ["Itaú", "Mercado Pago", "Nubank", "Clear"];
+    
+    const DESPESAS_ESSENCIAIS = [
+      "ALIMENTAÇÃO ESSENCIAL",
+      "ASSINATURAS ESSENCIAIS",
+      "BEM-ESTAR ESSENCIAL",
+      "COMUNICAÇÃO",
+      "CUIDADO PESSOAL",
+      "EDUCAÇÃO",
+      "IMPOSTOS E TRIBUTOS",
+      "SAÚDE",
+      "TRANSPORTE",
+      "MORADIA E SERVIÇOS ESSENCIAIS"
+    ];
+    
+    const DESPESAS_LIVRES = [
+      "LAZER E ENTRETENIMENTO",
+      "ALIMENTAÇÃO FORA",
+      "VESTUÁRIO",
+      "VIAGENS E PASSEIOS",
+      "MIMOS E EXTRAS"
+    ];
+    
+    const DESPESA_BANCOS = ["Cartão", "Itaú", "Mercado Pago", "Nubank", "Clear"];
+    
+    // FUNÇÕES
+    function $(id) { return document.getElementById(id); }
+    
+    function setOptions(select, list) {
+      if (!select) {
+        console.error('Select não encontrado!');
+        return;
+      }
+      select.innerHTML = `<option value="">Selecione</option>`;
+      list.forEach((item) => {
+        const opt = document.createElement("option");
+        opt.value = item;
+        opt.textContent = item;
+        select.appendChild(opt);
+      });
+    }
+    
+    // INICIALIZAÇÃO
+    document.addEventListener('DOMContentLoaded', () => {
+      console.log('DOM carregado!');
+      
+      // Preencher selects
+      setOptions($("receitaCategoria"), RECEITA_CATEGORIAS);
+      setOptions($("receitaBanco"), RECEITA_BANCOS);
+      setOptions($("poupancaCategoria"), POUPANCA_CATEGORIAS);
+      setOptions($("poupancaBanco"), POUPANCA_BANCOS);
+      setOptions($("despesaBanco"), DESPESA_BANCOS);
+      
+      $("despesaCategoria").innerHTML = `<option value="">Selecione tipo primeiro</option>`;
+      
+      // Event listener para despesa
+      $("despesaSubtipo").addEventListener("change", (e) => {
+        if (e.target.value === "essencial") {
+          setOptions($("despesaCategoria"), DESPESAS_ESSENCIAIS);
+        } else if (e.target.value === "livre") {
+          setOptions($("despesaCategoria"), DESPESAS_LIVRES);
+        } else {
+          $("despesaCategoria").innerHTML = `<option value="">Selecione tipo primeiro</option>`;
+        }
+      });
+      
+      // Verificar se funcionou
+      const statusDiv = $("status");
+      const totalOpcoes = 
+        $("receitaCategoria").options.length +
+        $("receitaBanco").options.length +
+        $("poupancaCategoria").options.length +
+        $("poupancaBanco").options.length +
+        $("despesaBanco").options.length;
+      
+      if (totalOpcoes > 5) {
+        statusDiv.className = "status ok";
+        statusDiv.textContent = `✅ FUNCIONOU! ${totalOpcoes} opções carregadas com sucesso!`;
+      } else {
+        statusDiv.className = "status error";
+        statusDiv.textContent = `❌ ERRO: Apenas ${totalOpcoes} opções carregadas.`;
+      }
+    });
+  </script>
+</body>
+</html>

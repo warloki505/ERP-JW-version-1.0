@@ -1,0 +1,296 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="Sistema de Gestão Financeira Pessoal" />
+  <title>ERP Financeiro - Login</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+
+<body>
+  <main class="container" style="max-width: 800px; padding-top: 60px;">
+    <div style="text-align: center; margin-bottom: 40px;">
+      <h1>💰 Gestor Financeiro</h1>
+      <p class="text-muted">Controle suas finanças com inteligência</p>
+    </div>
+
+    <!-- LOGIN -->
+    <section class="card">
+      <h2>Entrar na sua conta</h2>
+      <form id="login-form" class="form">
+        <div class="form-group">
+          <label for="login-email">E-mail</label>
+          <input 
+            type="email" 
+            id="login-email" 
+            placeholder="seu@email.com" 
+            autocomplete="email"
+            required 
+          />
+        </div>
+        
+        <div class="form-group">
+          <label for="login-password">Senha</label>
+          <input 
+            type="password" 
+            id="login-password" 
+            placeholder="Digite sua senha" 
+            autocomplete="current-password"
+            required 
+          />
+        </div>
+        
+        <button class="btn btn--primary" type="submit" style="width: 100%;">
+          Entrar
+        </button>
+      </form>
+    </section>
+
+    <!-- CADASTRO -->
+    <section class="card">
+      <h2>Criar nova conta</h2>
+      <form id="signup-form" class="form">
+        <div class="form-group">
+          <label for="signup-name">Nome completo</label>
+          <input 
+            type="text" 
+            id="signup-name" 
+            placeholder="Digite seu nome" 
+            autocomplete="name"
+            required 
+          />
+        </div>
+        
+        <div class="form-group">
+          <label for="signup-email">E-mail</label>
+          <input 
+            type="email" 
+            id="signup-email" 
+            placeholder="seu@email.com" 
+            autocomplete="email"
+            required 
+          />
+        </div>
+        
+        <div class="form-group">
+          <label for="signup-password">Senha</label>
+          <input 
+            type="password" 
+            id="signup-password" 
+            placeholder="Mínimo 6 caracteres" 
+            autocomplete="new-password"
+            minlength="6" 
+            required 
+          />
+          <small class="text-muted">A senha deve ter no mínimo 6 caracteres</small>
+        </div>
+        
+        <button class="btn btn--success" type="submit" style="width: 100%;">
+          Criar conta
+        </button>
+      </form>
+    </section>
+
+    <!-- STATUS -->
+    <div id="status" class="status hidden"></div>
+    
+    <p class="text-center text-muted" style="margin-top: 32px;">
+      <small>🔒 Modo Offline - Dados salvos apenas neste navegador</small>
+    </p>
+  </main>
+
+  <script>
+    // ===============================
+    // CONSTANTES
+    // ===============================
+    const USER_KEY = "gf_erp_user";
+    const LOGGED_KEY = "gf_erp_logged";
+
+    // ===============================
+    // ELEMENTOS DOM
+    // ===============================
+    const statusEl = document.getElementById("status");
+    const signupForm = document.getElementById("signup-form");
+    const loginForm = document.getElementById("login-form");
+
+    // ===============================
+    // VERIFICAR SE JÁ ESTÁ LOGADO
+    // ===============================
+    if (localStorage.getItem(LOGGED_KEY) === "true") {
+      window.location.href = "dashboard.html";
+    }
+
+    // ===============================
+    // FUNÇÕES AUXILIARES
+    // ===============================
+    
+    /**
+     * Hash simples para senha (SHA-256)
+     */
+    async function hashPassword(password) {
+      const encoder = new TextEncoder();
+      const data = encoder.encode(password);
+      const hashBuffer = await crypto.subtle.digest('SHA-256', data);
+      const hashArray = Array.from(new Uint8Array(hashBuffer));
+      return hashArray.map(b => b.toString(16).padStart(2, '0')).join('');
+    }
+
+    /**
+     * Exibe mensagem de status
+     */
+    function showStatus(message, type) {
+      statusEl.textContent = message;
+      statusEl.className = `status status--${type}`;
+      statusEl.classList.remove('hidden');
+      
+      // Auto-hide após 5 segundos
+      setTimeout(() => {
+        statusEl.classList.add('hidden');
+      }, 5000);
+    }
+
+    /**
+     * Valida formato de e-mail
+     */
+    function isValidEmail(email) {
+      const regex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+      return regex.test(email);
+    }
+
+    // ===============================
+    // HANDLER: CADASTRO
+    // ===============================
+    signupForm.addEventListener("submit", async (e) => {
+      e.preventDefault();
+      
+      const nome = document.getElementById('signup-name').value.trim();
+      const email = document.getElementById('signup-email').value.trim().toLowerCase();
+      const senha = document.getElementById('signup-password').value;
+
+      // Validações
+      if (!nome || nome.length < 3) {
+        showStatus("Nome deve ter no mínimo 3 caracteres.", "error");
+        return;
+      }
+
+      if (!isValidEmail(email)) {
+        showStatus("E-mail inválido.", "error");
+        return;
+      }
+
+      if (senha.length < 6) {
+        showStatus("Senha deve ter no mínimo 6 caracteres.", "error");
+        return;
+      }
+
+      // Verificar se usuário já existe
+      const existingUser = JSON.parse(localStorage.getItem(USER_KEY) || "null");
+      if (existingUser && existingUser.email === email) {
+        showStatus("Este e-mail já está cadastrado. Faça login.", "error");
+        return;
+      }
+
+      try {
+        // Hash da senha
+        const senhaHash = await hashPassword(senha);
+        
+        // Salvar usuário
+        const usuario = {
+          nome,
+          email,
+          senha: senhaHash,
+          dataCriacao: new Date().toISOString()
+        };
+        
+        localStorage.setItem(USER_KEY, JSON.stringify(usuario));
+        
+        showStatus("✓ Conta criada com sucesso! Agora faça login.", "ok");
+        
+        // Limpar formulário
+        signupForm.reset();
+        
+        // Focar no formulário de login
+        setTimeout(() => {
+          document.getElementById('login-email').focus();
+        }, 1000);
+        
+      } catch (error) {
+        showStatus("Erro ao criar conta. Tente novamente.", "error");
+        console.error('Erro no cadastro:', error);
+      }
+    });
+
+    // ===============================
+    // HANDLER: LOGIN
+    // ===============================
+    loginForm.addEventListener("submit", async (e) => {
+      e.preventDefault();
+      
+      const email = document.getElementById('login-email').value.trim().toLowerCase();
+      const senha = document.getElementById('login-password').value;
+
+      // Validações básicas
+      if (!isValidEmail(email)) {
+        showStatus("E-mail inválido.", "error");
+        return;
+      }
+
+      if (!senha) {
+        showStatus("Digite sua senha.", "error");
+        return;
+      }
+
+      try {
+        // Buscar usuário
+        const usuario = JSON.parse(localStorage.getItem(USER_KEY) || "null");
+        
+        if (!usuario) {
+          showStatus("Usuário não encontrado. Crie uma conta primeiro.", "error");
+          return;
+        }
+
+        // Hash da senha fornecida
+        const senhaHash = await hashPassword(senha);
+        
+        // Verificar credenciais
+        if (usuario.email === email && usuario.senha === senhaHash) {
+          // Login bem-sucedido
+          localStorage.setItem(LOGGED_KEY, "true");
+          
+          showStatus("✓ Login realizado! Redirecionando...", "ok");
+          
+          // Redirecionar após animação
+          setTimeout(() => {
+            window.location.href = "dashboard.html";
+          }, 800);
+          
+        } else {
+          showStatus("E-mail ou senha incorretos.", "error");
+        }
+        
+      } catch (error) {
+        showStatus("Erro ao fazer login. Tente novamente.", "error");
+        console.error('Erro no login:', error);
+      }
+    });
+
+    // ===============================
+    // ANIMAÇÃO DE ENTRADA
+    // ===============================
+    document.addEventListener('DOMContentLoaded', () => {
+      const cards = document.querySelectorAll('.card');
+      cards.forEach((card, index) => {
+        card.style.opacity = '0';
+        card.style.transform = 'translateY(20px)';
+        
+        setTimeout(() => {
+          card.style.transition = 'all 0.4s ease-out';
+          card.style.opacity = '1';
+          card.style.transform = 'translateY(0)';
+        }, index * 100);
+      });
+    });
+  </script>
+</body>
+</html>
