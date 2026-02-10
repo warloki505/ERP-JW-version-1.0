@@ -825,3 +825,50 @@ tbody td {
     background: white !important;
   }
 }
+/* =========================================
+   SELECT / OPTION — ESTILO ERP (AZUL + CINZA)
+   ========================================= */
+
+select {
+  background-color: #f8fafc !important;   /* cinza bem claro */
+  color: #1f2937 !important;              /* texto escuro */
+  border: 1px solid #cbd5e1 !important;   /* cinza-azulado */
+  border-radius: 8px;
+  padding: 10px;
+  font-size: 14px;
+  -webkit-appearance: menulist !important;
+  appearance: menulist !important;
+}
+
+/* placeholder "Selecione" */
+select option[value=""] {
+  color: #94a3b8; /* cinza suave */
+}
+
+/* opções normais */
+option {
+  background-color: #ffffff !important;
+  color: #1f2937 !important;
+}
+
+/* hover (quando passa o mouse) */
+option:hover {
+  background-color: #e5efff !important; /* azul bem claro */
+  color: #1e3a8a !important;
+}
+
+/* opção selecionada */
+option:checked,
+option[selected] {
+  background-color: #2563eb !important; /* azul principal */
+  color: #ffffff !important;
+}
+
+/* foco no select (clique) */
+select:focus {
+  outline: none;
+  border-color: #2563eb !important;
+  box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.2);
+  background-color: #ffffff !important;
+}
+
