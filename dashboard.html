@@ -3,296 +3,193 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <meta name="description" content="Dashboard de Gestão Financeira Pessoal" />
-  <title>ERP Financeiro - Dashboard</title>
+  <title>Gestor Financeiro - Dashboard</title>
   <link rel="stylesheet" href="style.css" />
 </head>
 
 <body>
-  <!-- HEADER -->
+  <!-- TOPO -->
   <header class="topbar">
     <div class="container topbar__row">
-      <h1>💰 Gestor Financeiro</h1>
+      <h1>Gestor Financeiro</h1>
+
       <div class="topbar__actions">
-        <span id="userName" class="text-muted" style="font-size: 14px;"></span>
-        <button id="btnPerfil" class="btn btn--ghost">⚙️ Perfil</button>
-        <button id="btnHistorico" class="btn btn--ghost">📊 Histórico</button>
-        <button id="logoutBtn" class="btn btn--ghost">🚪 Sair</button>
+        <button class="btn btn--ghost" type="button"
+          onclick="window.location.href='dashboard.html'">
+          Início
+        </button>
+
+        <button id="logoutBtn" class="btn btn--ghost" type="button">
+          Sair
+        </button>
       </div>
     </div>
   </header>
 
-  <!-- MAIN CONTENT -->
   <main class="container">
-    
-    <!-- SELETOR DE MÊS -->
-    <section class="card" style="margin-top: 24px;">
-      <div style="display: flex; align-items: center; justify-content: space-between; gap: 16px;">
-        <div>
-          <h2 style="margin-bottom: 4px;">Mês Ativo</h2>
-          <p class="text-muted" style="font-size: 14px; margin: 0;">Visualizando dados de <strong id="monthLabel"></strong></p>
-        </div>
-        <div style="display: flex; gap: 8px;">
-          <button id="btnPrevMonth" class="btn btn--ghost">← Anterior</button>
-          <button id="btnCurrentMonth" class="btn btn--primary">Mês Atual</button>
-          <button id="btnNextMonth" class="btn btn--ghost">Próximo →</button>
-        </div>
-      </div>
-    </section>
 
-    <!-- RESUMO / KPIs -->
+    <!-- BLOCO 1 — RESUMO -->
     <section class="card">
-      <h2>RESUMO DO MÊS</h2>
+      <h2>RESUMO</h2>
+
       <div class="kpi-grid">
         <div class="kpi">
-          <div class="kpi__title">Renda Total</div>
-          <div class="kpi__value" id="kpiRenda">R$ 0,00</div>
-        </div>
-        
-        <div class="kpi">
-          <div class="kpi__title">Poupança Total</div>
-          <div class="kpi__value" id="kpiPoupanca">R$ 0,00</div>
-        </div>
-        
-        <div class="kpi">
           <div class="kpi__title">Despesas Essenciais</div>
-          <div class="kpi__value" id="kpiEssenciais">R$ 0,00</div>
+          <div id="kpiEssenciais" class="kpi__value">R$ 0,00</div>
         </div>
-        
+
         <div class="kpi">
           <div class="kpi__title">Despesas Livres</div>
-          <div class="kpi__value" id="kpiLivres">R$ 0,00</div>
+          <div id="kpiLivres" class="kpi__value">R$ 0,00</div>
         </div>
-        
+
+        <div class="kpi">
+          <div class="kpi__title">Renda Total</div>
+          <div id="kpiRenda" class="kpi__value">R$ 0,00</div>
+        </div>
+
+        <div class="kpi">
+          <div class="kpi__title">Poupança Total</div>
+          <div id="kpiPoupanca" class="kpi__value">R$ 0,00</div>
+        </div>
+
         <div class="kpi kpi--highlight">
-          <div class="kpi__title">💎 Saldo a Distribuir</div>
-          <div class="kpi__value" id="kpiSaldoDistribuir">R$ 0,00</div>
-          <small>valor ainda não comprometido</small>
+          <div class="kpi__title">Saldo a Distribuir</div>
+          <div id="kpiSaldoDistribuir" class="kpi__value">R$ 0,00</div>
+          <div class="kpi__hint">valor ainda não comprometido</div>
         </div>
       </div>
     </section>
 
-    <!-- LANÇAMENTOS (3 COLUNAS) -->
+    <!-- BLOCO 2 — LANÇAMENTOS -->
     <section class="grid-3">
-      
-      <!-- COLUNA: RECEITA -->
-      <div class="card">
-        <h3>💵 RECEITA</h3>
-        <form id="formReceita" class="form">
-          <div class="form-group">
-            <label for="receitaData">Data</label>
-            <input type="date" id="receitaData" name="data" required />
-          </div>
-          
-          <div class="form-group">
-            <label for="receitaValor">Valor (R$)</label>
-            <input type="number" id="receitaValor" name="valor" step="0.01" min="0.01" placeholder="0,00" required />
-          </div>
-          
-          <div class="form-group">
-            <label for="receitaCategoria">Categoria</label>
-            <select id="receitaCategoria" name="categoria" required>
-              <option value="">Selecione</option>
-            </select>
-          </div>
-          
-          <div class="form-group">
-            <label for="receitaBanco">Banco/Conta</label>
-            <select id="receitaBanco" name="banco" required>
-              <option value="">Selecione</option>
-            </select>
-          </div>
-          
-          <div class="form-group">
-            <label for="receitaDescricao">Descrição (opcional)</label>
-            <input type="text" id="receitaDescricao" name="descricao" placeholder="Ex: Salário de janeiro" />
-          </div>
-          
-          <button class="btn btn--success" type="submit" style="width: 100%;">
-            ✓ Adicionar Receita
-          </button>
-        </form>
-      </div>
 
-      <!-- COLUNA: POUPANÇA -->
-      <div class="card">
-        <h3>🏦 POUPANÇA</h3>
+      <!-- POUPANÇA -->
+      <section class="card">
+        <h3>POUPANÇA</h3>
         <form id="formPoupanca" class="form">
-          <div class="form-group">
-            <label for="poupancaData">Data</label>
-            <input type="date" id="poupancaData" name="data" required />
-          </div>
-          
-          <div class="form-group">
-            <label for="poupancaValor">Valor (R$)</label>
-            <input type="number" id="poupancaValor" name="valor" step="0.01" min="0.01" placeholder="0,00" required />
-          </div>
-          
-          <div class="form-group">
-            <label for="poupancaCategoria">Categoria</label>
-            <select id="poupancaCategoria" name="categoria" required>
-              <option value="">Selecione</option>
-            </select>
-          </div>
-          
-          <div class="form-group">
-            <label for="poupancaBanco">Banco/Conta</label>
-            <select id="poupancaBanco" name="banco" required>
-              <option value="">Selecione</option>
-            </select>
-          </div>
-          
-          <div class="form-group">
-            <label for="poupancaDescricao">Descrição (opcional)</label>
-            <input type="text" id="poupancaDescricao" name="descricao" placeholder="Ex: Reserva de emergência" />
-          </div>
-          
-          <button class="btn btn--primary" type="submit" style="width: 100%;">
-            ✓ Adicionar Poupança
-          </button>
-        </form>
-      </div>
+          <label>Data</label>
+          <input type="date" name="data" required />
 
-      <!-- COLUNA: DESPESAS -->
-      <div class="card">
-        <h3>💳 DESPESAS</h3>
-        <form id="formDespesa" class="form">
-          <div class="form-group">
-            <label for="despesaData">Data</label>
-            <input type="date" id="despesaData" name="data" required />
-          </div>
-          
-          <div class="form-group">
-            <label for="despesaValor">Valor (R$)</label>
-            <input type="number" id="despesaValor" name="valor" step="0.01" min="0.01" placeholder="0,00" required />
-          </div>
-          
-          <div class="form-group">
-            <label for="despesaSubtipo">Tipo de Despesa</label>
-            <select id="despesaSubtipo" required>
-              <option value="">Selecione</option>
-              <option value="essencial">🔴 Despesa Essencial</option>
-              <option value="livre">🟢 Despesa Livre</option>
-            </select>
-          </div>
-          
-          <div class="form-group">
-            <label for="despesaCategoria">Categoria</label>
-            <select id="despesaCategoria" required>
-              <option value="">Selecione tipo primeiro</option>
-            </select>
-          </div>
-          
-          <div class="form-group">
-            <label for="despesaBanco">Banco/Conta</label>
-            <select id="despesaBanco" required>
-              <option value="">Selecione</option>
-            </select>
-          </div>
-          
-          <div class="form-group">
-            <label for="despesaDescricao">Descrição (opcional)</label>
-            <input type="text" id="despesaDescricao" name="descricao" placeholder="Ex: Conta de luz" />
-          </div>
-          
-          <button class="btn btn--danger" type="submit" style="width: 100%;">
-            ✓ Adicionar Despesa
+          <label>Valor</label>
+          <input type="number" name="valor" step="0.01" min="0.01" required />
+
+          <label>Categoria</label>
+          <select name="categoria" id="poupancaCategoria" required></select>
+
+          <label>Banco</label>
+          <select name="banco" id="poupancaBanco" required></select>
+
+          <label>Descrição (opcional)</label>
+          <input type="text" name="descricao" placeholder="Opcional" />
+
+          <button class="btn btn--primary" type="submit">
+            + Adicionar Poupança
           </button>
         </form>
-      </div>
+      </section>
+
+      <!-- RECEITA -->
+      <section class="card">
+        <h3>RECEITA</h3>
+        <form id="formReceita" class="form">
+          <label>Data</label>
+          <input type="date" name="data" required />
+
+          <label>Valor</label>
+          <input type="number" name="valor" step="0.01" min="0.01" required />
+
+          <label>Categoria</label>
+          <select name="categoria" id="receitaCategoria" required></select>
+
+          <label>Banco</label>
+          <select name="banco" id="receitaBanco" required></select>
+
+          <label>Descrição (opcional)</label>
+          <input type="text" name="descricao" placeholder="Opcional" />
+
+          <button class="btn btn--primary" type="submit">
+            + Adicionar Receita
+          </button>
+        </form>
+      </section>
+
+      <!-- DESPESAS -->
+      <section class="card">
+        <h3>DESPESAS</h3>
+        <form id="formDespesa" class="form">
+          <label>Data</label>
+          <input type="date" name="data" required />
+
+          <label>Valor</label>
+          <input type="number" name="valor" step="0.01" min="0.01" required />
+
+          <label>Tipo de despesa</label>
+          <select name="subtipo" id="despesaSubtipo" required>
+            <option value="">Selecione</option>
+            <option value="essencial">Despesa Essencial</option>
+            <option value="livre">Despesa Livre</option>
+          </select>
+
+          <label>Categoria</label>
+          <select name="categoria" id="despesaCategoria" required>
+            <option value="">Selecione</option>
+          </select>
+
+          <label>Banco</label>
+          <select name="banco" id="despesaBanco" required></select>
+
+          <label>Descrição (opcional)</label>
+          <input type="text" name="descricao" placeholder="Opcional" />
+
+          <button class="btn btn--primary" type="submit">
+            + Adicionar Despesa
+          </button>
+        </form>
+      </section>
 
     </section>
 
-    <!-- TABELA DE LANÇAMENTOS -->
+    <!-- BLOCO 3 — TABELA -->
     <section class="card">
-      <h2>TODOS OS LANÇAMENTOS</h2>
-      <div class="table-wrapper">
+      <h2>TABELA DE LANÇAMENTOS</h2>
+
+      <div class="table-wrap">
         <table>
           <thead>
             <tr>
-              <th>Tipo</th>
               <th>Data</th>
               <th>Valor</th>
               <th>Categoria</th>
               <th>Banco</th>
-              <th>Descrição</th>
               <th>Ações</th>
             </tr>
           </thead>
-          <tbody id="txTbody">
-            <tr>
-              <td colspan="7" style="text-align: center; padding: 40px;">
-                <span class="text-muted">Nenhum lançamento neste mês</span>
-              </td>
-            </tr>
-          </tbody>
+          <tbody id="txTbody"></tbody>
         </table>
       </div>
     </section>
 
-    <!-- RODAPÉ COM AÇÕES -->
+    <!-- BLOCO 4 — AÇÕES -->
     <section class="footer-actions">
-      <button onclick="window.scrollTo({top: 0, behavior: 'smooth'})" class="btn btn--ghost">
-        ↑ Voltar ao topo
+      <button class="btn btn--primary"
+        onclick="window.scrollTo({ top: 0, behavior: 'smooth' })">
+        Voltar para o início
       </button>
-      <button onclick="window.print()" class="btn btn--ghost">
-        🖨️ Imprimir / Exportar PDF
+
+      <button class="btn btn--ghost" onclick="window.print()">
+        Exportar Relatório (PDF)
       </button>
-      <button onclick="location.href='charts.html'" class="btn btn--ghost">
-        📊 Exportar Gráficos
-      </button>
-      <button id="btnLimparMes" class="btn btn--danger">
-        🗑️ Limpar todos os dados do mês
+
+      <button class="btn btn--ghost"
+        onclick="window.location.href='charts.html'">
+        Exportar Gráficos
       </button>
     </section>
 
   </main>
 
-  <!-- MODAL DE EDIÇÃO -->
-  <div id="modalEdit" class="modal-overlay hidden" style="display: none;">
-    <div class="modal">
-      <div class="modal-header">
-        <h3>Editar Lançamento</h3>
-        <button onclick="closeEditModal()" class="btn btn--ghost btn-mini">✕</button>
-      </div>
-      <div class="modal-body">
-        <form id="formEdit" class="form">
-          <input type="hidden" id="editId" />
-          
-          <div class="form-group">
-            <label for="editData">Data</label>
-            <input type="date" id="editData" required />
-          </div>
-          
-          <div class="form-group">
-            <label for="editValor">Valor (R$)</label>
-            <input type="number" id="editValor" step="0.01" min="0.01" required />
-          </div>
-          
-          <div class="form-group">
-            <label for="editCategoria">Categoria</label>
-            <select id="editCategoria" required></select>
-          </div>
-          
-          <div class="form-group">
-            <label for="editBanco">Banco</label>
-            <select id="editBanco" required></select>
-          </div>
-          
-          <div class="form-group">
-            <label for="editDescricao">Descrição</label>
-            <input type="text" id="editDescricao" />
-          </div>
-        </form>
-      </div>
-      <div class="modal-footer">
-        <button onclick="closeEditModal()" class="btn btn--ghost">Cancelar</button>
-        <button onclick="saveEdit()" class="btn btn--primary">💾 Salvar alterações</button>
-      </div>
-    </div>
-  </div>
-
-  <!-- SCRIPTS -->
-  <script src="js/dashboard.js"></script>
+  <!-- ✅ JS NA RAIZ -->
+  <script src="dashboard.js"></script>
 </body>
 </html>
