@@ -3,7 +3,7 @@
    Blindado contra IDs ausentes
    ===================================================== */
 
-const TX_KEY = "gf_erp_tx";
+const TX_KEY = `gf_erp_tx_${new Date().toISOString().slice(0,7)}`;
 
 const POUPANCA_CATEGORIAS = ["Reserva","Investimento","Aplicação"];
 const POUPANCA_BANCOS = ["Itaú","Mercado Pago","Nubank","Clear"];
